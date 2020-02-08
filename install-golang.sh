@@ -5,6 +5,8 @@ OS="linux"
 ARCH="amd64"
 CHECKSUM="b3dd4bd781a0271b33168e627f7f43886b4c5d1c794a4015abf34e99c6526ca3"
 
+DIR_INSTALL="/usr/local"
+GO_ROOT="$DIR_INSTALL/go"
 GO_PROJECTS_DIR="/home/go"
 
 URL="https://dl.google.com/go"
@@ -26,10 +28,16 @@ if [ -f "$ARCHIVE_FILE" ]; then
     mkdir -p $GO_PROJECTS_DIR
     mkdir -p $GO_PROJECTS_DIR/{src,pkg,bin}
     echo "Dirs created - OK."
-    echo "export PATH=\"\$PATH:/usr/local/go/bin\"" >> ~/.bash_profile
-    echo "export GOPATH=\"${GO_PROJECTS_DIR}\"" >> ~/.bash_profile
-    echo "export GOBIN=\"\$GOPATH/bin\"" >> ~/.bash_profile
-    source ~/.bash_profile
+
+    echo '#GoLang Env start' >> "$HOME/.bashrc"
+    echo "export GOROOT=\"$GO_ROOT\"" >> "$HOME/.bashrc"
+    echo "export GOPATH=\"${GO_PROJECTS_DIR}\"" >> "$HOME/.bashrc"
+    echo 'export GOBIN="$GOPATH/bin"' >> "$HOME/.bashrc"
+    echo 'export PATH=$PATH:$GOROOT/bin' >> "$HOME/.bashrc"
+    echo '#end GoLang Env' >> "$HOME/.bashrc"
+
+    source "$HOME/.bashrc"
+
     echo "Profile updated - OK."
 
     VERSION_INFO=$(go version)
